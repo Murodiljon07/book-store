@@ -1,0 +1,38 @@
+.book-details {
+  padding: 50px 0;
+}
+
+.details-card {
+  display: grid;
+  grid-template-columns: minmax(250px, 400px) 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+.details-img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.details-title {
+  font-size: 3rem;
+  margin-bottom: 10px;
+}
+
+.details-author,
+.details-year {
+  font-size: 1.6rem;
+  opacity: 0.8;
+}
+
+.details-desc {
+  margin-top: 20px;
+  font-size: 1.8rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .details-card {
+    grid-template-columns: 1fr;
+  }
+}
