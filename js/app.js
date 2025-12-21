@@ -1,12 +1,17 @@
 import { getBooks } from "./api.js";
 
 const BookList = document.querySelector(".books-list");
+const Picks = document.getElementById("picks");
+const ShowAllBooks = document.getElementById("show-all-books");
 
-function updateUi(books) {
-  let cutSome = books.slice(0, 12);
+export function updateUi(books) {
+  if (books.length == 0) {
+    Picks.textContent = "404 NOT FOUND";
+  }
+
   BookList.innerHTML = "";
 
-  cutSome.forEach((book) => {
+  books.forEach((book) => {
     let { id, title, description, author, year } = book;
     BookList.innerHTML += `
       <div class="book-box" data-id="${id}">
@@ -26,7 +31,26 @@ function updateUi(books) {
 
 async function init() {
   const books = await getBooks();
-  updateUi(books);
+  ShowAllBooks.addEventListener("click", (e) => {
+    let show = ShowAllBooks.classList.toggle("show");
+    if (show) {
+      updateUi(books);
+      ShowAllBooks.textContent = "Close";
+    } else {
+      let cutSome = books.slice(0, 12);
+      ShowAllBooks.textContent = "More";
+      updateUi(cutSome);
+    }
+  });
+
+  if (books.length > 12) {
+    let cutSome = books.slice(0, 12);
+    updateUi(cutSome);
+    ShowAllBooks.style.display = "block";
+  } else {
+    updateUi(books);
+    ShowAllBooks.style.display = "none";
+  }
 }
 
 init();
@@ -35,7 +59,5 @@ BookList.addEventListener("click", (e) => {
   let bookBox = e.target.closest(".book-box");
   if (!bookBox) return;
   let id = bookBox.dataset.id;
-  console.log(id);
-
   window.location.href = `../html/detailes.html?id=${id}`;
 });
